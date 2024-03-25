@@ -5,11 +5,6 @@ const selectDB = mongoose.connection.useDb('cloudmind_sts')
 const UserSchema = new Schema({
     passWord: String,
     role: Number,
-    auths: [{
-        type: Number,
-        appId: String,
-        unionId: String
-    }],
 })
 const userModel = selectDB.model('user', UserSchema, 'user')
 
