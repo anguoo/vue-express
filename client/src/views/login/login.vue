@@ -104,15 +104,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 <style scoped lang="css">
 .login-box {
-    position: absolute;
     width: 100%;
     height: 100%;
+    padding: 50px;
+    background: rgb(240,240,240);
+    background: linear-gradient(59deg, rgba(240,240,240,1) 0%, rgba(246,246,246,1) 31%, rgba(228,238,246,1) 59%, rgba(231,245,255,1) 74%, rgba(240,240,255,1) 89%, rgba(247,242,255,1) 98%, rgba(255,253,254,1) 100%, rgba(209,228,255,1) 100%);
+    overflow-y: auto;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 
     .login-panel {
+      margin: auto;
+
         .title {
             display: flex;
             align-items: center;
