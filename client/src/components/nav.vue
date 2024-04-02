@@ -1,10 +1,9 @@
 <template>
     <div class="nav-box">
         <el-menu
-            default-active="/"
+            :default-active="props.navActive"
             class="el-menu-vertical-demo"
             router="true"
-            unique-opened="true"
             background-color="#545c64"
             text-color="#ffffff99"
         >
@@ -15,19 +14,9 @@
             <el-menu-item index="/">
                 首页
             </el-menu-item>
-            <el-sub-menu index="user">
-                <template #title>
-                    <span>用户管理</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item index="/user">
-                        用户管理
-                    </el-menu-item>
-                    <el-menu-item index="/user/role">
-                        角色管理
-                    </el-menu-item>
-                </el-menu-item-group>
-            </el-sub-menu>
+            <el-menu-item index="/user">
+                用户管理
+            </el-menu-item>
             <el-sub-menu index="permission">
                 <template #title>
                     <span>权限管理</span>
@@ -83,6 +72,10 @@
 <script setup lang="ts">
 import router from '@/router';
 import { ref } from 'vue'
+
+const props = defineProps<{
+    navActive: string
+}>()
 </script>
 <style scoped lang="css">
 .nav-box {
@@ -92,8 +85,7 @@ import { ref } from 'vue'
     flex-direction: column;
 
     .el-menu-vertical-demo:deep(.is-active) {
-        background-color: #409EFF;
-        color: #fff;
+        color: #409EFF;
     }
 
     .fill {
