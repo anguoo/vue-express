@@ -12,7 +12,7 @@
                         size="small"
                         placeholder="Please Input"
                         :prefix-icon="Search"
-                        />
+                    />
                 </div>
                 <div class="show">
                     <span class="avatar">头像</span>
@@ -79,10 +79,14 @@ const searchContents = ref('')
                 border-bottom: 1px solid #eeeeee;
                 display: flex;
 
-                .avatar,
+                .avatar {
+                    width: 110px;
+                    margin-right: 10px;
+                }
+
                 .name {
-                    display: block;
-                    width: 100px;
+                    width: 150px;
+                    margin-right: 10px;
                 }
             }
 
@@ -90,18 +94,21 @@ const searchContents = ref('')
                 width: 100%;
                 padding: 10px 15px;
                 background-color: #fff;
-                border-bottom: 1px solid #eeeeee;
 
                 .user {
                     width: 100%;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #eeeeee;
                     display: flex;
                     align-items: center;
 
                     .avatar {
                         width: 100px;
+                        margin-right: 10px;
                     }
                     .name {
-                        width: 95px;
+                        width: 150px;
+                        margin-right: 5px;
                     }
 
                     .operates {
