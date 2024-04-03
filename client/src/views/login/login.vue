@@ -7,43 +7,70 @@
             </div>
             <div class="form-box">
                 <el-form
-                    ref="ruleFormRef"
-                    style="max-width: 600px"
-                    :model="ruleForm"
-                    status-icon
-                    :rules="rules"
-                    label-width="auto"
-                    class="demo-ruleForm"
+                  ref="ruleFormRef"
+                  style="max-width: 600px"
+                  :model="ruleForm"
+                  status-icon
+                  label-width="auto"
+                  class="demo-ruleForm"
                 >
-                    <el-form-item prop="pass">
-                        <el-input 
-                            v-model="ruleForm.pass" 
-                            type="email" 
-                            autocomplete="off" 
-                            prefix-icon="User"
-                            placeholder="请输入邮箱"
-                        />
-                    </el-form-item>
-                    <el-form-item prop="checkPass">
-                        <el-input
-                            v-model="ruleForm.checkPass"
-                            type="password"
-                            autocomplete="off"
-                            prefix-icon="Lock"
-                            placeholder="请输入密码"
-                        />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-checkbox v-model="autoLogin" label="自动登录" size="middle" />
-                        <span>忘记密码</span>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button 
-                            type="primary" 
-                            @click="submitForm(ruleFormRef)"
-                        >登录</el-button>
-                    </el-form-item>
-                </el-form>
+                  <el-form-item 
+                    prop="email"
+                    :rules="[
+                      {
+                        required: true,
+                        message: '请输入邮箱',
+                        trigger: 'blur',
+                      },
+                      {
+                        type: 'email',
+                        message: '请输入正确的邮箱格式',
+                        trigger: ['blur', 'change'],
+                      },
+                    ]"  
+                  >
+                    <el-input 
+                        v-model="ruleForm.email" 
+                        type="email" 
+                        prefix-icon="User"
+                        placeholder="请输入邮箱"
+                    />
+                  </el-form-item>
+                  <el-form-item 
+                    prop="password"
+                    :rules="[
+                      {
+                        required: true,
+                        message: '请输入密码',
+                        trigger: 'blur',
+                      },
+                      {
+                        min: 6,
+                        max: 20,
+                        message: '密码长度在 6 到 20 个字符',
+                        trigger: 'blur',
+                      },
+                    ]"
+                  >
+                    <el-input
+                      v-model="ruleForm.password"
+                      type="password"
+                      autocomplete="off"
+                      prefix-icon="Lock"
+                      placeholder="请输入密码"
+                    />
+                  </el-form-item>
+                  <el-form-item>
+                    <el-checkbox v-model="autoLogin" label="自动登录" size="middle" />
+                    <span>忘记密码</span>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button 
+                        type="primary" 
+                        @click="submitForm(ruleFormRef)"
+                    >登录</el-button>
+                  </el-form-item>
+              </el-form>
             </div>
         </div>
     </div>
@@ -51,51 +78,33 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance } from 'element-plus'
+import { post } from '@/utils/axios'
 
 const autoLogin = ref(true)
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-  pass: '',
-  checkPass: '',
-})
-
-const validatePass = (rule: any, value: any, callback: any) => {  
-  if (value === '') {
-    callback(new Error('请输入账号'))
-  } 
-  else {
-    if (ruleForm.checkPass !== '') {
-      if (!ruleFormRef.value) return
-      ruleFormRef.value.validateField('checkPass', () => null)
-    }
-    callback()
-  }
-}
-const validatePass2 = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('请输入密码'))
-  } 
-  else if (value !== ruleForm.pass) {
-    callback(new Error("Two inputs don't match!"))
-  } 
-  else {
-    callback()
-  }
-}
-
-const rules = reactive<FormRules<typeof ruleForm>>({
-  pass: [{ validator: validatePass, trigger: 'blur' }],
-  checkPass: [{ validator: validatePass2, trigger: 'blur' }],
+  email: '',
+  password: '',
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      post('/users/login', {
+        email: ruleForm.email,
+        password: ruleForm.password,
+      })
+      .then((res: any) => {
+        if (res.success) {
+          console.log('提交成功！')
+        } else {
+          console.log(res.msg)
+        }
+      })
     } else {
-      console.log('error submit!')
+      console.log('提交失败！')
       return false
     }
   })
