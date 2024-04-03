@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const app = express()
 
+//引入cors
+const core = require('cors')
+app.use(core())
+
 //引入users.js
 const users = require('./routes/users')
 const passport = require('passport')
