@@ -80,6 +80,7 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { post } from '@/utils/axios'
+import { successMsg, errorMsg } from "@/utils/message";
 
 const autoLogin = ref(true)
 const ruleFormRef = ref<FormInstance>()
@@ -98,9 +99,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
       })
       .then((res: any) => {
         if (res.success) {
-          console.log('提交成功！')
+          successMsg('登录成功')
         } else {
-          console.log(res.msg)
+          errorMsg(res.msg)
         }
       })
     } else {
