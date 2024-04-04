@@ -43,7 +43,10 @@ router.post("/login", (req, res) => {
             })
         } 
         else {
-            res.status(400).json({msg: "密码错误"})
+            res.status(200).json({
+                success: false,
+                msg: "密码错误"
+            })
         }
     })
 })
