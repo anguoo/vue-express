@@ -81,6 +81,7 @@ import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { post } from '@/utils/axios'
 import { successMsg, errorMsg } from "@/utils/message";
+import router from '@/router';
 
 const autoLogin = ref(true)
 const ruleFormRef = ref<FormInstance>()
@@ -100,12 +101,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
       .then((res: any) => {
         if (res.success) {
           successMsg('登录成功')
-        } else {
+          localStorage.setItem('AccessToken', res.accessToken)
+          localStorage.setItem('RefreshToken', res.refreshToken)
+          router.push('/')
+        } 
+        else {
           errorMsg(res.msg)
         }
       })
     } else {
-      console.log('提交失败！')
       return false
     }
   })
