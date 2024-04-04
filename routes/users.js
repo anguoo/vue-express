@@ -6,10 +6,6 @@ const jwt_refresh = require('jsonwebtoken')
 const passport = require('passport')
 const secret = require('../config/mongodb').secretOrKey
 
-router.get("/test", (req, res) => {
-    res.json({msg: "login works"})
-})
-
 let accessToken, refreshToken
 router.post("/login", (req, res) => {
     const email = req.body.email
@@ -23,6 +19,13 @@ router.post("/login", (req, res) => {
                 msg:"用户不存在"
             })
         }
+        else if (user.role !== 1) {
+            return res.status(200).json({
+                success: false,
+                msg:"用户没有权限"
+            })
+        }
+
         if (user.passWord === password) {
             const rlue = {id: user.id, role: user.role}
             // jwt.sign("规则", "加密名字", "过期时间", "箭头函数")
